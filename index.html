@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Birthday Elegance | A Luxe Celebration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&family=Cormorant+Garamond:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --champagne: #F7E7CE;
+            --gold: #D4AF37;
+            --deep-purple: #1A1A2E;
+            --rich-burgundy: #722F37;
+            --pearl: #F8F6F0;
+            --rose-gold: #B76E79;
+            --charcoal: #2C2C2C;
+            --soft-gold: #E6C67C;
+            --ivory: #FFF8E7;
+            --amethyst: #9B59B6;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            background: linear-gradient(145deg, var(--deep-purple) 0%, var(--rich-burgundy) 50%, var(--amethyst) 100%);
+            font-family: 'Inter', sans-serif;
+            color: var(--champagne);
+        }
+
+        /* Particle Background */
+        #particle-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Balloons */
+        .balloon {
+            position: absolute;
+            width: 50px;
+            height: 60px;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            opacity: 0;
+            transition: opacity 0.7s ease;
+            z-index: 10;
+            pointer-events: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .balloon.show {
+            opacity: 1;
+            animation: float 15s ease-in-out forwards;
+        }
+
+        .balloon::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 80px;
+            background: linear-gradient(rgba(255, 255, 255, 0.5), transparent);
+            left: 50%;
+            bottom: -80px;
+            transform: translateX(-50%);
+        }
+
+        .balloon-1 { background: linear-gradient(135deg, #ff6b6b, #ff8787); left: 10%; }
+        .balloon-2 { background: linear-gradient(135deg, #4ecdc4, #44a3aa); left: 30%; }
+        .balloon-3 { background: linear-gradient(135deg, #feca57, #ff9ff3); left: 50%; }
+        .balloon-4 { background: linear-gradient(135deg, #48dbfb, #0abde6); left: 70%; }
+        .balloon-5 { background: linear-gradient(135deg, #ff9ff3, #f368e0); left: 20%; }
+        .balloon-6 { background: linear-gradient(135deg, #a55eea, #8b5cf6); left: 60%; }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(-5deg);
+            }
+            25% {
+                transform: translateY(70vh) translateX(20px) rotate(3deg);
+            }
+            50% {
+                transform: translateY(40vh) translateX(-15px) rotate(-2deg);
+            }
+            75% {
+                transform: translateY(10vh) translateX(10px) rotate(2deg);
+            }
+            100% {
+                transform: translateY(-150px) translateX(0) rotate(0deg);
+            }
+        }
+
+        /* Confetti */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            z-index: 9;
+            pointer-events: none;
+            border-radius: 2px;
+            transform-origin: center;
+        }
+
+        .confetti.show {
+            opacity: 0.9;
+            animation: confetti-burst 5s ease-out forwards;
+        }
+
+        @keyframes confetti-burst {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(1);
+            }
+            50% {
+                transform: translateY(50vh) rotate(360deg) scale(0.8);
+            }
+            100% {
+                transform: translateY(-150px) rotate(720deg) scale(0.5);
+            }
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+            position: relative;
+            z-index: 5;
+        }
+
+        .screen {
+            display: none;
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+            width: 100%;
+            max-width: 100vw;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .screen.active {
+            display: block;
+            opacity: 1;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .luxury-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            color: var(--champagne);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .friend-img {
+            width: clamp(220px, 60vw, 280px);
+            height: clamp(220px, 60vw, 280px);
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--gold);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            margin: 2rem 0;
+            animation: gentle-pulse 4s ease-in-out infinite;
+            transition: transform 0.3s ease;
+        }
+
+        .friend-img:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes gentle-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .luxury-quote {
+            font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+            color: var(--pearl);
+            margin: 1.5rem auto;
+            line-height: 1.7;
+            max-width: 85vw;
+            padding: 0 1.5rem;
+            font-family: 'Inter', sans-serif;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .elegant-btn {
+            background: linear-gradient(135deg, var(--gold), var(--soft-gold));
+            color: var(--deep-purple);
+            border: none;
+            padding: 18px 50px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.1rem, 4.5vw, 1.3rem);
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+            transition: all 0.4s ease;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .elegant-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .elegant-btn:hover::before {
+            left: 100%;
+        }
+
+        .elegant-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.7);
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            position: relative;
+            z-index: 15;
+        }
+
+        .welcome-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 7vw, 3.2rem);
+            color: var(--champagne);
+            margin-bottom: 2.5rem;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            letter-spacing: 2px;
+        }
+
+        .welcome-subtitle {
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
+            color: var(--ivory);
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Background -->
+    <canvas id="particle-bg"></canvas>
+
+    <!-- Balloons -->
+    <div class="balloon balloon-1" id="balloon1"></div>
+    <div class="balloon balloon-2" id="balloon2"></div>
+    <div class="balloon balloon-3" id="balloon3"></div>
+    <div class="balloon balloon-4" id="balloon4"></div>
+    <div class="balloon balloon-5" id="balloon5"></div>
+    <div class="balloon balloon-6" id="balloon6"></div>
+
+    <!-- Container -->
+    <div class="container">
+        <!-- Screen 1: Welcome -->
+        <div class="screen active welcome-screen" id="screen1">
+            <h1 class="welcome-title">A Grand Celebration Awaits</h1>
+            <p class="welcome-subtitle">Embark on a luxurious journey of memories</p>
+            <button class="elegant-btn" onclick="startCelebration()">✨ Unveil the Elegance ✨</button>
+        </div>
+
+        <!-- Screen 2: First Memory -->
+        <div class="screen" id="screen2">
+            <h1 class="luxury-title">Timeless Memory</h1>
+            <img class="friend-img" src="1.jpg" alt="Friend">
+            <p class="luxury-quote">"Some friendships illuminate every moment with eternal radiance"</p>
+            <button class="elegant-btn" onclick="showScreen3()">Next Chapter 💎</button>
+        </div>
+
+        <!-- Screen 3: Second Memory -->
+        <div class="screen" id="screen3">
+            <h1 class="luxury-title">Cherished Adventure</h1>
+            <img class="friend-img" src="2.jpg" alt="Friend">
+            <p class="luxury-quote">"Every shared journey weaves a tapestry of unforgettable stories"</p>
+            <button class="elegant-btn" onclick="showScreen4()">Grand Finale 🎉</button>
+        </div>
+
+        <!-- Screen 4: Final Celebration -->
+        <div class="screen" id="screen4">
+            <h1 class="luxury-title">🎂 A Majestic Birthday! 🎂</h1>
+            <img class="friend-img" src="3.jpg" alt="Birthday Star">
+            <p class="luxury-quote" style="font-family: 'Cormorant Garamond', serif; font-size: clamp(1.3rem, 5.5vw, 2rem);">
+                "To my cherished friend - may your day shimmer with joy and be adorned with golden memories!"
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Particle Background
+        const canvas = document.getElementById('particle-bg');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.opacity = Math.random() * 0.5 + 0.3;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            for (let i = 0; i < 50; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        function startCelebration() {
+            const balloons = document.querySelectorAll('.balloon');
+            balloons.forEach((balloon, index) => {
+                setTimeout(() => {
+                    balloon.classList.add('show');
+                }, index * 400);
+            });
+
+            createConfetti();
+
+            setTimeout(() => {
+                document.getElementById('screen1').classList.remove('active');
+                document.getElementById('screen2').classList.add('active');
+            }, 2000);
+        }
+
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#feca57', '#48dbfb', '#ff9ff3', '#a55eea', '#D4AF37'];
+            for (let i = 0; i < 40; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                document.body.appendChild(confetti);
+
+                setTimeout(() => {
+                    confetti.classList.add('show');
+                }, Math.random() * 800);
+
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+        function showScreen3() {
+            createConfetti();
+            document.getElementById('screen2').classList.remove('active');
+            document.getElementById('screen3').classList.add('active');
+        }
+
+        function showScreen4() {
+            createConfetti();
+            setTimeout(() => {
+                for (let i = 0; i < 6; i++) {
+                    setTimeout(createConfetti, i * 400);
+                }
+            }, 600);
+            document.getElementById('screen3').classList.remove('active');
+            document.getElementById('screen4').classList.add('active');
+        }
+
+        // Continuous subtle sparkles
+        setInterval(() => {
+            if (Math.random() > 0.6) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'confetti';
+                sparkle.style.left = Math.random() * 100 + 'vw';
+                sparkle.style.backgroundColor = '#D4AF37';
+                sparkle.style.animationDuration = '5s';
+                sparkle.style.width = '6px';
+                sparkle.style.height = '6px';
+                document.body.appendChild(sparkle);
+
+                setTimeout(() => {
+                    sparkle.classList.add('show');
+                }, 100);
+
+                setTimeout(() => sparkle.remove(), 5000);
+            }
+        }, 1500);
+    </script>
+</body>
+</html>
